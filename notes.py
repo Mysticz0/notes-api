@@ -10,7 +10,8 @@ def main():
         1. Write a note
         2. Show a note
         3. Show all notes
-        4. Exit\n""")
+        4. Search for notes with specific content
+        5. Exit\n""")
             
         if action == '1':
             title = input("Enter a title: ")
@@ -28,6 +29,11 @@ def main():
             print(json.dumps(response.json(), indent=2))
         
         elif action == '4':
+            content = input("Enter what content you want to find in the notes: ")
+            response = requests.get(f"{BASE}/search", params={"content" : content})
+            print(json.dumps(response.json(), indent=2))
+
+        elif action == '5':
             break
 
         else:
