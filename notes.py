@@ -1,5 +1,6 @@
-import app
+from textwrap import indent
 import requests
+import json
 
 BASE = "http://localhost:8000"
 
@@ -20,11 +21,11 @@ def main():
         elif action == '2':
             title = input("Enter the note's title: ")
             response = requests.get(f"{BASE}/notes/{title}")
-            print("\n" + response.json()["content"])
+            print(json.dumps(response.json(), indent = 2))
         
         elif action == '3':
             response = requests.get(f"{BASE}/notes")
-            print(response.json()["content"])
+            print(json.dumps(response.json(), indent=2))
         
         elif action == '4':
             break

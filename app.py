@@ -2,10 +2,10 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 class Note(BaseModel):
-    title: str
-    note: str
+    title: str = "Untitled"
+    note: str = ""
 
-notes = {}
+notes = []
 app = FastAPI()
 
 @app.get("/")
@@ -14,15 +14,16 @@ def root():
 
 @app.post("/write")
 def write_note(note: Note):
-    notes[note.title] = note.note
+    notes.append({"title" : note.title, "body" : note.note})
 
 @app.get("/notes/{title}")
 def search_notes_title(title: str):
-    if title in notes:
-        return {"content": notes[title]}
-    else: 
-        raise HTTPException(status_code=404, detail=f"'{title}' not found")
+    for note in notes:
+        if title == note["title"]:
+            return note
+        
+    raise HTTPException(status_code=404, detail=f"'{title}' not found")
 
 @app.get("/notes")
 def show_all_notes():
-    return {"content" : notes}
+    return notes
